@@ -1,0 +1,4 @@
+﻿The Internal Catalogue is a combination of common star catalogues
+into unique IDs identified internally.
+http://www.messier.seds.org/xtra/supp/cats.html
+

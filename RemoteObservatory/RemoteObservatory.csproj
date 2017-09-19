@@ -10,7 +10,12 @@
 
   <PropertyGroup>
     <UserSecretsId>aspnet-RemoteObservatory-a312fbdb-92a9-422d-a8e8-8e80b14e7430</UserSecretsId>
+    <SignAssembly>False</SignAssembly>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="wwwroot\js\popper.min.js" />
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore" Version="1.1.2" />

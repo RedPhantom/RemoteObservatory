@@ -21,9 +21,9 @@ namespace RemoteObservatory.Models.Astronomy
         DateTime ObservationStart;
 
         /// <summary>
-        /// The raw capture file.
+        /// An array of capture files, each has its own settings.
         /// </summary>
-        FileModel file;
+        FileModel[] file;
 
         /// <summary>
         /// These will be assigned different values based on what coordinate system is chosen.
@@ -43,25 +43,6 @@ namespace RemoteObservatory.Models.Astronomy
         {
             Coordinates,
             ObjectID
-        }
-
-        /// <summary>
-        /// How to measure the gain for capture
-        /// </summary>
-        enum SensetivityMethods
-        {
-            ISO,
-            Gain
-        }
-
-        /// <summary>
-        /// How to capture color from the telescope camera.
-        /// </summary>
-        enum ColorMethod
-        {
-            BlackAndWhite,
-            RGB,
-            FalseColor
         }
 
         /// <summary>
@@ -91,34 +72,5 @@ namespace RemoteObservatory.Models.Astronomy
             Supergalactic
         }
 
-        /// <summary>
-        /// The vertical resolution of the image (in pixels).
-        /// </summary>
-        int VerticalResolution;
-
-        /// <summary>
-        /// The horizontal resolution of the image (in pixels).
-        /// </summary>
-        int HorizontalResolution;
-
-        /// <summary>
-        /// The offset from the top.
-        /// </summary>
-        int VerticalOffset;
-
-        /// <summary>
-        /// The offset from the left.
-        /// </summary>
-        int HorizontalOffser;
-
-        /// <summary>
-        /// Exposure time (in seconds).
-        /// </summary>
-        int Exposure;
-
-        /// <summary>
-        /// Frame rate for the capture (in frames per second).
-        /// </summary>
-        float FrameRate;
     }
 }

@@ -1,8 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -14,52 +12,51 @@ namespace RemoteObservatory.Models.Astronomy
     public class ObservationModel
     {
 
-        [Key]
-        public long ID { get; set; }
+        private Guid _uuid;
+
+        public Guid UUID { get; set; }
 
         /// <summary>
         /// The user ordering the observation.
         /// </summary>
-        public ApplicationUser OrderingUser { get; set; }
+        ApplicationUser OrderingUser;
 
-        [DataType(DataType.Date)]
-        [Required]
         /// <summary>
         /// When the observation starts.
         /// </summary>
-        public DateTime ObservationStart { get; set; }
+        DateTime ObservationStart;
 
-        [DataType(DataType.Text)]
+        /// <summary>
+        /// An array of capture files, each has its own settings.
+        /// </summary>
+        FileModel[] file;
+
         /// <summary>
         /// These will be assigned different values based on what coordinate system is chosen.
         /// </summary>
-        public string Longtitude { get; set; }
-        public string Latitude { get; set; }
+        string Longtitude;
+        string Latitude;
 
-        [Required]
         /// <summary>
         /// The ID of the object within the internal catalogue.
         /// </summary>
-        public long ObjectID { get; set; }
-
-        public string ObjectName { get; set; }
+        long ObjectID;
 
         /// <summary>
         /// Whether to track coordinates or the name of an object.
         /// </summary>
-        public enum CaptureMethods
+        enum CaptureMethods
         {
             Coordinates,
             ObjectID
         }
 
-        [Required]
-        public CaptureMethods CaptureMethod { get; set; }
+        CaptureMethods CaptureMethod;
 
         /// <summary>
         /// Current status of the observation.
         /// </summary>
-        public enum ObservationStatus
+        enum ObservationStatus
         {
             PendingApproval, // observation is pending approval by the staff.
             Pending, // awating capturing date.
@@ -69,15 +66,14 @@ namespace RemoteObservatory.Models.Astronomy
             Complete // complete and sent to client/user.
         }
 
-        [Required]
-        public ObservationStatus Status { get; set; }
+        ObservationStatus Status;
 
         /// <summary>
         /// The system of coordinates to observe coordinates from.
         /// <see cref="https://en.wikipedia.org/wiki/Celestial_coordinate_system"/>.
         /// Usually measured in degrees, minutes and seconds.
         /// </summary>
-        public enum CoordinateSystems
+        enum CoordinateSystems
         {
             Horizontal,
             Equatorial,
@@ -86,25 +82,23 @@ namespace RemoteObservatory.Models.Astronomy
             Supergalactic
         }
 
-        [Required]
-        public CoordinateSystems CoordinateSystem { get; set; }
-
-        public ICollection<FileModel> Files { get; set; }
+        CoordinateSystems CoordinateSystem;
 
         /// <summary>
         /// returns a JSON string for the request file.
         /// </summary>
         /// <param name="observation"></param>
         /// <returns></returns>
-        public string ConvertToJson()
+        public string ConvertToJson(ObservationModel observation)
         {
-            return JsonConvert.SerializeObject(this);
+            return JsonConvert.SerializeObject(observation);
         }
 
-        public ObservationModel()
+        ObservationModel New()
         {
-            //https://stackoverflow.com/questions/23915109/why-collection-initialization-throws-nullreferenceexception
-            Files = new Collection<FileModel> { };
+            ObservationModel _obs = new ObservationModel();
+            _obs.UUID = System.Guid.NewGuid();
+            return _obs;
         }
 
     }

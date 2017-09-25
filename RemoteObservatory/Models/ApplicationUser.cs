@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 namespace RemoteObservatory.Models
 {
@@ -20,8 +21,12 @@ namespace RemoteObservatory.Models
             Admin
         }
 
+        [Required]
+        [DataType(DataType.Text)]
         string FirstName;
 
+        [Required]
+        [DataType(DataType.Text)]
         string LastName;
     }
 }

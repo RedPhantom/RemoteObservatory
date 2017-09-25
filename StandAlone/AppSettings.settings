@@ -1,0 +1,15 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="StandAlone" GeneratedClassName="AppSettings">
+  <Profiles />
+  <Settings>
+    <Setting Name="SerialPort" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">COM1</Value>
+    </Setting>
+    <Setting Name="RequestFilePath" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">./request_log.txt</Value>
+    </Setting>
+    <Setting Name="RequestFile" Type="System.String" Scope="User">
+      <Value Profile="(Default)">./request.json</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

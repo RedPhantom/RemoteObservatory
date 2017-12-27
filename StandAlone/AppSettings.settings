@@ -11,5 +11,11 @@
     <Setting Name="RequestFile" Type="System.String" Scope="User">
       <Value Profile="(Default)">./request.json</Value>
     </Setting>
+    <Setting Name="TelescopeModel" Type="System.String" Scope="User">
+      <Value Profile="(Default)">MeadeLX200_16GPS</Value>
+    </Setting>
+    <Setting Name="LogFileLocation" Type="System.String" Scope="User">
+      <Value Profile="(Default)">./Log.txt</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -20,21 +20,15 @@ namespace RemoteObservatory.Models.Astronomy
         /// <summary>
         /// The user ordering the observation.
         /// </summary>
-        public ApplicationUser OrderingUser { get; set; }
+        public string OwnerID { get; set; }
 
-        [DataType(DataType.Date)]
+        [DataType(DataType.DateTime)]
+        [Display(Name ="Observation Start Date")]
         [Required]
         /// <summary>
         /// When the observation starts.
         /// </summary>
         public DateTime ObservationStart { get; set; }
-
-        [DataType(DataType.Text)]
-        /// <summary>
-        /// These will be assigned different values based on what coordinate system is chosen.
-        /// </summary>
-        public string Longtitude { get; set; }
-        public string Latitude { get; set; }
 
         [Required]
         /// <summary>
@@ -43,18 +37,6 @@ namespace RemoteObservatory.Models.Astronomy
         public long ObjectID { get; set; }
 
         public string ObjectName { get; set; }
-
-        /// <summary>
-        /// Whether to track coordinates or the name of an object.
-        /// </summary>
-        public enum CaptureMethods
-        {
-            Coordinates,
-            ObjectID
-        }
-
-        [Required]
-        public CaptureMethods CaptureMethod { get; set; }
 
         /// <summary>
         /// Current status of the observation.
@@ -71,23 +53,6 @@ namespace RemoteObservatory.Models.Astronomy
 
         [Required]
         public ObservationStatus Status { get; set; }
-
-        /// <summary>
-        /// The system of coordinates to observe coordinates from.
-        /// <see cref="https://en.wikipedia.org/wiki/Celestial_coordinate_system"/>.
-        /// Usually measured in degrees, minutes and seconds.
-        /// </summary>
-        public enum CoordinateSystems
-        {
-            Horizontal,
-            Equatorial,
-            Ecliptic,
-            Galactic,
-            Supergalactic
-        }
-
-        [Required]
-        public CoordinateSystems CoordinateSystem { get; set; }
 
         public ICollection<FileModel> Files { get; set; }
 

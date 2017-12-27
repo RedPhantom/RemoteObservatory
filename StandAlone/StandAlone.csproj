@@ -51,10 +51,11 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>AppSettings.settings</DependentUpon>
     </Compile>
-    <Compile Include="ObservationModel.cs" />
+    <Compile Include="LogHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Request.cs" />
+    <Compile Include="TelescopeDictionary\MeadeLX200_16GPS.cs" />
     <Compile Include="SerialHelper.cs">
       <SubType>Component</SubType>
     </Compile>

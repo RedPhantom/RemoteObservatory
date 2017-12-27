@@ -6,6 +6,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO.Ports;
+using StandAlone.TelescopeDictionary;
 
 namespace StandAlone
 {
@@ -14,11 +15,19 @@ namespace StandAlone
         static void Main(string[] args)
         {
 
-            SerialHelper serialPort = new SerialHelper();
-            serialPort.Create();
-
+            MeadeLX200_16GPS telescope = new MeadeLX200_16GPS();
+            telescope.PlayFartSound(100);
+            
         }
 
+
+        /// <summary>
+        /// A continues loop for sending commands to the telescope.
+        /// </summary>
+        static void TestRoutine()
+        {
+
+        }
 
     }
 }

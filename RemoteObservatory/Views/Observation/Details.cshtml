@@ -1,0 +1,72 @@
+@model RemoteObservatory.Models.Astronomy.ObservationModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>ObservationModel</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.OrderingUser)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.OrderingUser)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ObservationStart)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ObservationStart)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Longtitude)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Longtitude)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Latitude)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Latitude)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ObjectID)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ObjectID)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ObjectName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ObjectName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CaptureMethod)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CaptureMethod)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CoordinateSystem)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CoordinateSystem)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.ID">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

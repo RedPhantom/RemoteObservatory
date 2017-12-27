@@ -12,6 +12,8 @@ using Microsoft.Extensions.Logging;
 using RemoteObservatory.Data;
 using RemoteObservatory.Models;
 using RemoteObservatory.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
 
 namespace RemoteObservatory
 {
@@ -47,7 +49,14 @@ namespace RemoteObservatory
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
-            services.AddMvc();
+            //services.AddMvc();
+            services.AddMvc(config =>
+            {
+                var policy = new AuthorizationPolicyBuilder()
+                                 .RequireAuthenticatedUser()
+                                 .Build();
+                config.Filters.Add(new AuthorizeFilter(policy));
+            });
 
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();

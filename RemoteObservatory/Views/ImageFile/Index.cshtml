@@ -1,0 +1,83 @@
+@model IEnumerable<RemoteObservatory.Models.Astronomy.FileModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.SensetivityMethod)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.SensetivityValue)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ColorMethod)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.VerticalResolution)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.HorizontalResolution)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.VerticalOffset)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.HorizontalOffset)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ExposureTime)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FrameRate)
+                </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.SensetivityMethod)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SensetivityValue)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ColorMethod)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.VerticalResolution)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HorizontalResolution)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.VerticalOffset)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HorizontalOffset)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ExposureTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FrameRate)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.ID" class="text-danger">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

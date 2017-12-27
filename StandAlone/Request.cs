@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using RemoteObservatory.Models.Astronomy;
 
 namespace StandAlone
 {
@@ -34,12 +33,12 @@ namespace StandAlone
             return (searchResult != -1); // true if result is found, false if not.
         }
 
-        public ObservationModel RequestToObservation(string JsonRequest)
+        /*public ObservationModel RequestToObservation(string JsonRequest)
         {
             ObservationModel obs = JsonConvert.DeserializeObject<ObservationModel>(JsonRequest);
             return obs;
 
-        }
+        }*/
 
     }
 }

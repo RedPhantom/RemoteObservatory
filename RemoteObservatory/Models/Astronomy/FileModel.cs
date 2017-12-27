@@ -23,15 +23,20 @@ namespace RemoteObservatory.Models.Astronomy
         }
 
         [Required]
-        public SensetivityMethods SensetivitMethod { get; set; }
+        [Display(Description = "Select a method of digital sensetivity measurement for the image.", Name = "Sensetivity Method", Prompt = "Select a method.")]
+        public SensetivityMethods SensetivityMethod { get; set; }
+        //public IEnumerable<SensetivityMethods> SensetivityMethod { get; set; }
 
         /// <summary>
         /// How to capture color from the telescope camera.
         /// </summary>
         public enum ColorMethods
         {
+            [Display(Name = "Gray-Scale")]
             GrayScale,
+            [Display(Name = "RGB")]
             RGB,
+            [Display(Name = "Filter")]
             Filter
         }
 
@@ -43,6 +48,7 @@ namespace RemoteObservatory.Models.Astronomy
 
         [Required]
         public ColorMethods ColorMethod { get; set; }
+        //public IEnumerable<ColorMethods> ColorMethod { get; set; }
 
         [Required]
         /// <summary>
@@ -79,6 +85,8 @@ namespace RemoteObservatory.Models.Astronomy
         /// Frame rate for the capture (in frames per second).
         /// </summary>
         public float FrameRate { get; set; }
+
+        public string OwnerID { get; set; }
 
         /// <summary>
         /// Returns the representation of the given capture file in JSON.

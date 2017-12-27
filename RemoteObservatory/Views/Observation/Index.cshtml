@@ -1,0 +1,83 @@
+@model IEnumerable<RemoteObservatory.Models.Astronomy.ObservationModel>
+
+@{
+    ViewData["Title"] = "Observation List";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.OwnerID)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ObservationStart)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Longtitude)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Latitude)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ObjectID)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ObjectName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CaptureMethod)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Status)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CoordinateSystem)
+                </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.OwnerID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ObservationStart)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Longtitude)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Latitude)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ObjectID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ObjectName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CaptureMethod)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CoordinateSystem)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

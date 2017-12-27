@@ -25,5 +25,7 @@ namespace RemoteObservatory.Data
         }
 
         public DbSet<RemoteObservatory.Models.Astronomy.ObservationModel> ObservationModel { get; set; }
+
+        public DbSet<RemoteObservatory.Models.Astronomy.FileModel> FileModel { get; set; }
     }
 }

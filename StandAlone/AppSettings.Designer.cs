@@ -52,5 +52,29 @@ namespace StandAlone {
                 this["RequestFile"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("MeadeLX200_16GPS")]
+        public string TelescopeModel {
+            get {
+                return ((string)(this["TelescopeModel"]));
+            }
+            set {
+                this["TelescopeModel"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("./Log.txt")]
+        public string LogFileLocation {
+            get {
+                return ((string)(this["LogFileLocation"]));
+            }
+            set {
+                this["LogFileLocation"] = value;
+            }
+        }
     }
 }

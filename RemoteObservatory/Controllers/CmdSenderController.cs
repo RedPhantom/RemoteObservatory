@@ -7,11 +7,14 @@ using RemoteObservatory.Models.Astronomy;
 
 namespace RemoteObservatory.Controllers
 {
+    /// <summary>
+    /// Handles sending and receiving data to the StandAlone utility.
+    /// </summary>
     public class CmdSenderController : Controller
     {
         public IActionResult Index()
         {
-            return View();
+            return View("AccessDenied");
         }
 
         public string ExportCommand(ObservationModel Observation)

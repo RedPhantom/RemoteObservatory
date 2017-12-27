@@ -1,0 +1,78 @@
+@model RemoteObservatory.Models.Astronomy.FileModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>FileModel</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ID)
+        </dt>
+        <dt>
+            @Html.DisplayFor(model => model.ID)
+        </dt>
+        <dt>
+            @Html.DisplayNameFor(model => model.SensetivityMethod)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.SensetivityMethod)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.SensetivityValue)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.SensetivityValue)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ColorMethod)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ColorMethod)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.VerticalResolution)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.VerticalResolution)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.HorizontalResolution)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.HorizontalResolution)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.VerticalOffset)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.VerticalOffset)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.HorizontalOffset)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.HorizontalOffset)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ExposureTime)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ExposureTime)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.FrameRate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.FrameRate)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.ID">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

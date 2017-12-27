@@ -9,9 +9,10 @@ using RemoteObservatory.Models.Astronomy;
 namespace RemoteObservatory.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170926115600_AddObsCtrl")]
+    partial class AddObsCtrl
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")
@@ -191,7 +192,7 @@ namespace RemoteObservatory.Data.Migrations
 
                     b.Property<long?>("ObservationModelID");
 
-                    b.Property<string>("OwnerID");
+                    b.Property<string>("OrderingUser");
 
                     b.Property<int>("SensetivityMethod");
 
@@ -213,13 +214,21 @@ namespace RemoteObservatory.Data.Migrations
                     b.Property<long>("ID")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<int>("CaptureMethod");
+
+                    b.Property<int>("CoordinateSystem");
+
+                    b.Property<string>("Latitude");
+
+                    b.Property<string>("Longtitude");
+
                     b.Property<long>("ObjectID");
 
                     b.Property<string>("ObjectName");
 
                     b.Property<DateTime>("ObservationStart");
 
-                    b.Property<string>("OwnerID");
+                    b.Property<string>("OrderingUser");
 
                     b.Property<int>("Status");
 

@@ -41,6 +41,30 @@ namespace RemoteObservatory.Controllers
             _logger = loggerFactory.CreateLogger<AccountController>();
         }
 
+        /// <summary>
+        /// Gets the current user ID.
+        /// </summary>
+        /// <returns>The current User ID.</returns>
+        [HttpGet]
+        public async Task<string> GetCurrentUserId()
+        {
+            ApplicationUser usr = await GetCurrentUserAsync();
+            return usr?.Id;
+        }
+
+        /// <summary>
+        /// Gets the current user object.
+        /// </summary>
+        /// <returns>Returns the current User Object.</returns>
+        [HttpGet]
+        public async Task<ApplicationUser> GetCurrentUser()
+        {
+            ApplicationUser usr = await GetCurrentUserAsync();
+            return usr;
+        }
+
+        private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
+
         //
         // GET: /Account/Login
         [HttpGet]

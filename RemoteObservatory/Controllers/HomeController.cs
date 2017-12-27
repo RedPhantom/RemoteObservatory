@@ -7,9 +7,11 @@ using System.Net.Sockets;
 using RemoteObservatory.Models.Astronomy;
 using System.Collections;
 using System.Collections.ObjectModel;
+using Microsoft.AspNetCore.Authorization;
 
 namespace RemoteObservatory.Controllers
 {
+    [AllowAnonymous]
     public class HomeController : Controller
     {
         public IActionResult Index()
@@ -39,8 +41,7 @@ namespace RemoteObservatory.Controllers
         public string Test()
         {
             ObservationModel obs = new ObservationModel()
-            {
-                CaptureMethod = ObservationModel.CaptureMethods.ObjectID,
+            { 
                 ID = 666,
                 ObservationStart = DateTime.Now,
                 ObjectID = 420,
@@ -53,7 +54,7 @@ namespace RemoteObservatory.Controllers
                 ColorMethod = FileModel.ColorMethods.GrayScale,
                 ExposureTime = 30,
                 FrameRate = 105.5F,
-                SensetivitMethod = FileModel.SensetivityMethods.ISO,
+                SensetivityMethod = FileModel.SensetivityMethods.ISO,
                 SensetivityValue = 1600
             });
             return obs.ConvertToJson();

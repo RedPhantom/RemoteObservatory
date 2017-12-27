@@ -9,9 +9,10 @@ using RemoteObservatory.Models.Astronomy;
 namespace RemoteObservatory.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170925110535_AddImageFile2")]
+    partial class AddImageFile2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")
@@ -191,8 +192,6 @@ namespace RemoteObservatory.Data.Migrations
 
                     b.Property<long?>("ObservationModelID");
 
-                    b.Property<string>("OwnerID");
-
                     b.Property<int>("SensetivityMethod");
 
                     b.Property<int>("SensetivityValue");
@@ -213,17 +212,27 @@ namespace RemoteObservatory.Data.Migrations
                     b.Property<long>("ID")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<int>("CaptureMethod");
+
+                    b.Property<int>("CoordinateSystem");
+
+                    b.Property<string>("Latitude");
+
+                    b.Property<string>("Longtitude");
+
                     b.Property<long>("ObjectID");
 
                     b.Property<string>("ObjectName");
 
                     b.Property<DateTime>("ObservationStart");
 
-                    b.Property<string>("OwnerID");
+                    b.Property<string>("OrderingUserId");
 
                     b.Property<int>("Status");
 
                     b.HasKey("ID");
+
+                    b.HasIndex("OrderingUserId");
 
                     b.ToTable("ObservationModel");
                 });
@@ -270,6 +279,13 @@ namespace RemoteObservatory.Data.Migrations
                     b.HasOne("RemoteObservatory.Models.Astronomy.ObservationModel")
                         .WithMany("Files")
                         .HasForeignKey("ObservationModelID");
+                });
+
+            modelBuilder.Entity("RemoteObservatory.Models.Astronomy.ObservationModel", b =>
+                {
+                    b.HasOne("RemoteObservatory.Models.ApplicationUser", "OrderingUser")
+                        .WithMany()
+                        .HasForeignKey("OrderingUserId");
                 });
         }
     }

@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using RemoteObservatory.Models;
-using RemoteObservatory.Models.Astronomy;
 
 namespace RemoteObservatory.Data
 {
@@ -23,9 +22,5 @@ namespace RemoteObservatory.Data
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
         }
-
-        public DbSet<RemoteObservatory.Models.Astronomy.ObservationModel> ObservationModel { get; set; }
-
-        public DbSet<RemoteObservatory.Models.Astronomy.FileModel> FileModel { get; set; }
     }
 }

@@ -12,7 +12,7 @@ namespace StandAlone {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.1.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.9.0.0")]
     internal sealed partial class AppSettings : global::System.Configuration.ApplicationSettingsBase {
         
         private static AppSettings defaultInstance = ((AppSettings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new AppSettings())));
@@ -25,10 +25,10 @@ namespace StandAlone {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("COM1")]
-        public string SerialPort {
+        [global::System.Configuration.DefaultSettingValueAttribute("COM9")]
+        public string TelescopeSerialPort {
             get {
-                return ((string)(this["SerialPort"]));
+                return ((string)(this["TelescopeSerialPort"]));
             }
         }
         
@@ -74,6 +74,15 @@ namespace StandAlone {
             }
             set {
                 this["LogFileLocation"] = value;
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("COM2")]
+        public string EndUnitSerialPort {
+            get {
+                return ((string)(this["EndUnitSerialPort"]));
             }
         }
     }

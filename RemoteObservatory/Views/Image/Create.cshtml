@@ -1,0 +1,111 @@
+@model RemoteObservatory.Models.Astronomy.FileModel
+@using RemoteObservatory.Models.Astronomy;
+
+@{
+    ViewData["Title"] = "Create Image File";
+
+    var SensetivityMethodData = from FileModel.SensetivityMethods e in Enum.GetValues(typeof(FileModel.SensetivityMethods))
+                                select new
+                                {
+                                    ID = (int)e,
+                                    Name = e.ToString()
+                                };
+    ViewBag.SensetivityMethodList = new SelectList(SensetivityMethodData, "ID", "Name");
+
+    var ColorMethodData = from FileModel.ColorMethods e in Enum.GetValues(typeof(FileModel.ColorMethods))
+                          select new
+                          {
+                              ID = (int)e,
+                              Name = e.ToString()
+                          };
+    ViewBag.ColorMethodList = new SelectList(ColorMethodData, "ID", "Name");
+}
+
+<h2>Create Image File for observation</h2>
+<p>
+    Create an image file to later include in an observation. An observation must include at least one Image File to save the captured data to.
+</p>
+
+<form asp-action="Create">
+    <div class="form-horizontal">
+        <h4>FileModel</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="SensetivityMethod" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <select asp-for="SensetivityMethod" class="form-control" asp-items="@ViewBag.SensetivityMethodList" required></select>
+                <span asp-validation-for="SensetivityMethod" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="SensetivityValue" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="SensetivityValue" class="form-control" required/>
+                <span asp-validation-for="SensetivityValue" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="ColorMethod" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <select asp-for="ColorMethod" class="form-control" asp-items="@ViewBag.ColorMethodList" required></select>
+                <span asp-validation-for="ColorMethod" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="VerticalResolution" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="VerticalResolution" class="form-control" required/>
+                <span asp-validation-for="VerticalResolution" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="HorizontalResolution" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="HorizontalResolution" class="form-control" required/>
+                <span asp-validation-for="HorizontalResolution" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="VerticalOffset" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="VerticalOffset" class="form-control" required/>
+                <span asp-validation-for="VerticalOffset" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="HorizontalOffset" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="HorizontalOffset" class="form-control" required/>
+                <span asp-validation-for="HorizontalOffset" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="ExposureTime" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="ExposureTime" class="form-control" required/>
+                <span asp-validation-for="ExposureTime" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="FrameRate" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="FrameRate" class="form-control" required/>
+                <span asp-validation-for="FrameRate" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create Image File" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to Image File List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -8,17 +8,6 @@ namespace RemoteObservatory.Models.AccountViewModels
 {
     public class RegisterViewModel
     {
-
-        [Required]
-        [StringLength(24, ErrorMessage = "The {0} must be at max {1} characters long.")]
-        [Display(Name ="First Name")]
-        public string FirstName { get; set; }
-
-        [Required]
-        [StringLength(24, ErrorMessage = "The {0} must be at max {1} characters long.")]
-        [Display(Name = "Last Name")]
-        public string LastName { get; set; }
-
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]

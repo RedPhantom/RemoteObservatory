@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
-using RemoteObservatory.Data;
-using RemoteObservatory.Models.Astronomy;
 
 namespace RemoteObservatory.Data.Migrations
 {
@@ -14,27 +15,25 @@ namespace RemoteObservatory.Data.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
             modelBuilder
-                .HasAnnotation("ProductVersion", "1.1.2")
+                .HasAnnotation("ProductVersion", "1.0.0-rc3")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRole", b =>
                 {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
+                    b.Property<string>("Id");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
 
                     b.Property<string>("Name")
-                        .HasMaxLength(256);
+                        .HasAnnotation("MaxLength", 256);
 
                     b.Property<string>("NormalizedName")
-                        .HasMaxLength(256);
+                        .HasAnnotation("MaxLength", 256);
 
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedName")
-                        .IsUnique()
                         .HasName("RoleNameIndex");
 
                     b.ToTable("AspNetRoles");
@@ -106,6 +105,8 @@ namespace RemoteObservatory.Data.Migrations
 
                     b.HasIndex("RoleId");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("AspNetUserRoles");
                 });
 
@@ -126,8 +127,7 @@ namespace RemoteObservatory.Data.Migrations
 
             modelBuilder.Entity("RemoteObservatory.Models.ApplicationUser", b =>
                 {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
+                    b.Property<string>("Id");
 
                     b.Property<int>("AccessFailedCount");
 
@@ -135,7 +135,7 @@ namespace RemoteObservatory.Data.Migrations
                         .IsConcurrencyToken();
 
                     b.Property<string>("Email")
-                        .HasMaxLength(256);
+                        .HasAnnotation("MaxLength", 256);
 
                     b.Property<bool>("EmailConfirmed");
 
@@ -144,10 +144,10 @@ namespace RemoteObservatory.Data.Migrations
                     b.Property<DateTimeOffset?>("LockoutEnd");
 
                     b.Property<string>("NormalizedEmail")
-                        .HasMaxLength(256);
+                        .HasAnnotation("MaxLength", 256);
 
                     b.Property<string>("NormalizedUserName")
-                        .HasMaxLength(256);
+                        .HasAnnotation("MaxLength", 256);
 
                     b.Property<string>("PasswordHash");
 
@@ -160,7 +160,7 @@ namespace RemoteObservatory.Data.Migrations
                     b.Property<bool>("TwoFactorEnabled");
 
                     b.Property<string>("UserName")
-                        .HasMaxLength(256);
+                        .HasAnnotation("MaxLength", 256);
 
                     b.HasKey("Id");
 
@@ -172,60 +172,6 @@ namespace RemoteObservatory.Data.Migrations
                         .HasName("UserNameIndex");
 
                     b.ToTable("AspNetUsers");
-                });
-
-            modelBuilder.Entity("RemoteObservatory.Models.Astronomy.FileModel", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("ColorMethod");
-
-                    b.Property<int>("ExposureTime");
-
-                    b.Property<float>("FrameRate");
-
-                    b.Property<int>("HorizontalOffset");
-
-                    b.Property<int>("HorizontalResolution");
-
-                    b.Property<long?>("ObservationModelID");
-
-                    b.Property<string>("OwnerID");
-
-                    b.Property<int>("SensetivityMethod");
-
-                    b.Property<int>("SensetivityValue");
-
-                    b.Property<int>("VerticalOffset");
-
-                    b.Property<int>("VerticalResolution");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("ObservationModelID");
-
-                    b.ToTable("FileModel");
-                });
-
-            modelBuilder.Entity("RemoteObservatory.Models.Astronomy.ObservationModel", b =>
-                {
-                    b.Property<long>("ID")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<long>("ObjectID");
-
-                    b.Property<string>("ObjectName");
-
-                    b.Property<DateTime>("ObservationStart");
-
-                    b.Property<string>("OwnerID");
-
-                    b.Property<int>("Status");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("ObservationModel");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRoleClaim<string>", b =>
@@ -263,13 +209,6 @@ namespace RemoteObservatory.Data.Migrations
                         .WithMany("Roles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("RemoteObservatory.Models.Astronomy.FileModel", b =>
-                {
-                    b.HasOne("RemoteObservatory.Models.Astronomy.ObservationModel")
-                        .WithMany("Files")
-                        .HasForeignKey("ObservationModelID");
                 });
         }
     }

@@ -4,24 +4,53 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO.Ports;
+using StandAlone.Modules;
 
 namespace StandAlone.TelescopeDictionary
 {
-    class MeadeLX200_16GPS
+    /// <summary>
+    /// A command dictionary supported by the Meade LX200 16" GPS telescope.
+    /// </summary>
+   public class MeadeLX200_16GPS
     {
         #region SerialSettings
+
         /// <summary>
         /// The Telescope name that appears in the configuration file.
         /// </summary>
         public const string TelescopeModel = "MeadeLX200_16GPS";
-        
+        /// <summary>
+        /// The parity of the serial connection protocol.
+        /// </summary>
         public const Parity CPairity = Parity.None;
+        /// <summary>
+        /// The stop-bits structure of the serial connection protocol.
+        /// </summary>
         public const StopBits CStopBits = StopBits.One;
+        /// <summary>
+        /// The bit-length structure of the serial connection protocol.
+        /// </summary>
         public const int DataBits = 8;
-        public Encoding Encoding = Encoding.ASCII;
+        /// <summary>
+        /// The text-connection encoding of the serial connection protocol.
+        /// </summary>
+        public Encoding Encoding { get; internal set; } = Encoding.ASCII;
+
+        /// <summary>
+        /// The ACK byte to send for alignment query as per the documentation.
+        /// </summary>
+        public const byte ACK = 0x06;
+
+        /// <summary>
+        /// The NAK byte that is received (within 10 ms of receiving the command terminating character) when the telescope is currently busy.
+        /// </summary>
+        public const byte NAK = 0x15;
+
+        SerialHelper _helper;
+        SerialHelper _dome;
+
         #endregion
 
-        private SerialHelper _helper;
         private LogHelper _log = new LogHelper();
 
         /// <summary>
@@ -29,14 +58,15 @@ namespace StandAlone.TelescopeDictionary
         /// </summary>
         /// <param name="Helper">A configured SerialHelper to send commands.</param>
         /// <returns>A TeleController object.</returns>
-        public MeadeLX200_16GPS New(SerialHelper Helper)
+        public MeadeLX200_16GPS(SerialHelper helper, SerialHelper Dome)
         {
-            this._helper = Helper;
             _log.LogFileLocation = AppSettings.Default.LogFileLocation;
-
-            return this;
+            _helper = helper;
         }
 
+        /// <summary>
+        /// Supported telescope alignment modes.
+        /// </summary>
         public enum AlignmentModes
         {
             AltAz,
@@ -50,43 +80,47 @@ namespace StandAlone.TelescopeDictionary
         /// <returns>The current alignment mode for the telescope.</returns>
         public AlignmentModes GetAlignmentMode()
         {
-            string ACK = ASCIIEncoding.ASCII.GetString(new byte[] { 0x06 }); // set the ACK ascii sign as per the LX200's specs.
+            string ACK = Encoding.ASCII.GetString(new byte[] { 0x06 }); // set the ACK ascii sign as per the LX200's specs.
             string response = _helper.DoCommand(ACK);
 
             switch (response)
             {
                 case "A":
-                    _log.WriteLog("Alignment Mode is AltAz");
+                    _log.Write("Alignment Mode is AltAz", "ALIGN");
                     return AlignmentModes.AltAz;
                     
                 case "L":
-                    _log.WriteLog("Alignment Mode is Land");
+                    _log.Write("Alignment Mode is Land", "ALIGN");
                     return AlignmentModes.Land;
 
                 case "P":
-                    _log.WriteLog("Alignment Mode is Polar");
+                    _log.Write("Alignment Mode is Polar", "ALIGN");
                     return AlignmentModes.Polar;
 
                 default:
-                    _log.WriteLog("Error: invalid response from serial device.", LogHelper.MessageLevels.Error);
+                    _log.Write("Error: invalid response from serial device.", "ALIGN", LogHelper.messageTypes.ERROR);
                     throw new Exception();
             }
         }
 
+        /// <summary>
+        /// Sets a telescope alignment mode.
+        /// </summary>
+        /// <param name="AlignmentMode">An <see cref="AlignmentModes"/> to be set.</param>
         public void SetAlignmentMode(AlignmentModes AlignmentMode)
         {
             switch (AlignmentMode)
             {
                 case AlignmentModes.AltAz:
-                    _log.WriteLog("Set Alignment Mode to AltAz");
+                    _log.Write("Set Alignment Mode to AltAz", "ALIGN");
                     _helper.DoCommand(":AA#");
                     break;
                 case AlignmentModes.Land:
-                    _log.WriteLog("Set Alignment Mode to Land");
+                    _log.Write("Set Alignment Mode to Land", "ALIGN");
                     _helper.DoCommand(":AL#");
                     break;
                 case AlignmentModes.Polar:
-                    _log.WriteLog("Set Alignment Mode to Polar");
+                    _log.Write("Set Alignment Mode to Polar", "ALIGN");
                     _helper.DoCommand(":AP#");
                     break;
                 default:
@@ -101,16 +135,22 @@ namespace StandAlone.TelescopeDictionary
         /// <returns>The selected object information terminated by a '#'.</returns>
         public string SyncTelescope()
         {
-            _log.WriteLog("Telescope synced with current object location.");
+            _log.Write("Telescope synced with current object location.", "ALIGN");
             return _helper.DoCommand(":CM#");
         }
 
+        /// <summary>
+        /// A direction in which the telescope focuser (if installed) moves.
+        /// </summary>
         public enum FocuserDirection
         {
             Inward,
             Outward
         }
         
+        /// <summary>
+        /// The speed in which the telescope focuser (if installed) moves.
+        /// </summary>
         public enum FocuserSpeed
         {
             Stop,
@@ -215,11 +255,17 @@ namespace StandAlone.TelescopeDictionary
         public void GoToMessier(int ID)
         {
             _helper.DoCommand(":LM" + ID.ToString() + "#");
+            //_dome.DoCommand(); 
         }
 
+        /// <summary>
+        /// Navigates the telescope to a DeepSky Catalog object.
+        /// </summary>
+        /// <param name="ID">The DeepSky catalog number.</param>
         void GoToDeepSkyObject(int ID)
         {
             _helper.DoCommand(":LC" + ID.ToString() + "#");
+            //_dome.DoCommand();
         }
 
         /// <summary>
@@ -240,15 +286,7 @@ namespace StandAlone.TelescopeDictionary
         public void GoTo(int ID)
         {
             _helper.DoCommand(":LS" + ID.ToString() + "#");
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="strength">The strength of the fart sound</param>
-        public void PlayFartSound(int strength)
-        {
-
+            //_dome.DoCommand();
         }
 
     }

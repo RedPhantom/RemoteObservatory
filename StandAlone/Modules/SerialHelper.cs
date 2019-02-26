@@ -22,7 +22,6 @@ namespace StandAlone.Modules
             internal set {
                 if (AvailableData != value)
                     AvailableData = value;
-
             }
         }
 
@@ -59,10 +58,11 @@ namespace StandAlone.Modules
                 Parity = Parity,
                 StopBits = StopBits,
                 DataBits = DataBits,
-                ReadTimeout = 500,
-                WriteTimeout = 3500,
+                ReadTimeout = -1,
+                WriteTimeout = -1,
                 ReadBufferSize = 1024
             };
+
             PEncoding = Encoding;
 
             try
@@ -72,10 +72,10 @@ namespace StandAlone.Modules
             }
             catch (Exception ex)
             {
-                LogHelper.WriteS("Serial port error: " + ex.Message, "SERIAL", LogHelper.messageTypes.ERROR);
+                LogHelper.WriteS("Serial port error: " + ex.Message, "SERIAL", LogHelper.MessageTypes.ERROR);
                 Program.OnProgramComplete();
             }
-            
+
         }
 
         /// <summary>
@@ -117,6 +117,8 @@ namespace StandAlone.Modules
         //    return output;
         //}
 
+        bool dataReceived = false;
+        
         public string DoCommand(string cmd)
         {
             byte[] buffer = new byte[CReadBufferSize];
@@ -126,19 +128,46 @@ namespace StandAlone.Modules
             {
                 _serialPort.Write(cmd);
 
+                Console.Write("UP: ");
+                foreach (byte b in Encoding.GetBytes(cmd))
+                {
+                    Console.Write(b.ToString().PadLeft(3, ' '));
+                }
+                Console.WriteLine();
+
+                Thread.Sleep(5);
             }
             catch (Exception ex)
             {
-                LogHelper.WriteS("Error serial writing: " + ex.Message, "SERIAL", LogHelper.messageTypes.ERROR);
-                return;
+                LogHelper.WriteS("Error serial writing: " + ex.Message, "SERIAL", LogHelper.MessageTypes.ERROR);
+                return null;
             }
 
             Thread.Sleep(10);
 
-            _serialPort.Read(buffer, 0, CReadBufferSize);
+            //string output = "";
+            //int i = 0;
+            //do
+            //{
+            //    _serialPort.Read(buffer, 0, 1024);
+            //    output += _serialPort.Encoding.GetString(buffer); // Convert the input bytes to a string.
+            //    buffer = new byte[CReadBufferSize];
 
-            // Convert the input bytes to a string.
-            string output = _serialPort.Encoding.GetString(buffer);
+            //    foreach (byte c in Encoding.GetBytes(output))
+            //    {
+            //        Console.Write(c + "\t");
+            //    }
+
+            //} while (!output.Contains("#"));
+
+            string output = _serialPort.ReadTo("#");
+
+            Console.Write("DN: ");
+            foreach (byte b in Encoding.GetBytes(output))
+            {
+                Console.Write(b.ToString().PadLeft(3, ' '));
+            }
+            Console.WriteLine();
 
             return output;
         }
@@ -146,18 +175,6 @@ namespace StandAlone.Modules
         public bool IsScopeBusy()
         {
             return ScopeBusy;
-        }
-
-        /// <summary>
-        /// Handles data received (not as a command response) from the serial port.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        internal void HandleDataIn(object sender, SerialDataReceivedEventArgs e)
-        {
-            SerialHelper sp = (SerialHelper)sender;
-            string indata = sp.ReadExisting();
-            AvailableData = indata;
         }
     }
 }

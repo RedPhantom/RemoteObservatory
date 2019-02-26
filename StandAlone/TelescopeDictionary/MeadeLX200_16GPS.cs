@@ -11,26 +11,30 @@ namespace StandAlone.TelescopeDictionary
     /// <summary>
     /// A command dictionary supported by the Meade LX200 16" GPS telescope.
     /// </summary>
-   public class MeadeLX200_16GPS
+   public class MeadeLX200_16GPS /* : IScope */
     {
         #region SerialSettings
 
         /// <summary>
         /// The Telescope name that appears in the configuration file.
         /// </summary>
-        public const string TelescopeModel = "MeadeLX200_16GPS";
+        public const string ModelName = "MeadeLX200_16GPS";
+
         /// <summary>
         /// The parity of the serial connection protocol.
         /// </summary>
         public const Parity CPairity = Parity.None;
+
         /// <summary>
         /// The stop-bits structure of the serial connection protocol.
         /// </summary>
         public const StopBits CStopBits = StopBits.One;
+
         /// <summary>
         /// The bit-length structure of the serial connection protocol.
         /// </summary>
         public const int DataBits = 8;
+
         /// <summary>
         /// The text-connection encoding of the serial connection protocol.
         /// </summary>
@@ -46,12 +50,12 @@ namespace StandAlone.TelescopeDictionary
         /// </summary>
         public const byte NAK = 0x15;
 
-        SerialHelper _helper;
-        SerialHelper _dome;
+        SerialHelper _helper; // scope
+        SerialHelper _dome;   // dome
 
         #endregion
 
-        private LogHelper _log = new LogHelper();
+        private LogHelper _log = new LogHelper(); // registers all log operations.
 
         /// <summary>
         /// Initialize a TeleController object.
@@ -98,7 +102,7 @@ namespace StandAlone.TelescopeDictionary
                     return AlignmentModes.Polar;
 
                 default:
-                    _log.Write("Error: invalid response from serial device.", "ALIGN", LogHelper.messageTypes.ERROR);
+                    _log.Write("Error: invalid response from serial device.", "ALIGN", LogHelper.MessageTypes.ERROR);
                     throw new Exception();
             }
         }
@@ -288,6 +292,5 @@ namespace StandAlone.TelescopeDictionary
             _helper.DoCommand(":LS" + ID.ToString() + "#");
             //_dome.DoCommand();
         }
-
     }
 }

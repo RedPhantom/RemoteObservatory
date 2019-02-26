@@ -68,6 +68,10 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>AppSettings.settings</DependentUpon>
     </Compile>
+    <Compile Include="CameraDictionary\ASI\ASICameraDll2.cs" />
+    <Compile Include="CameraDictionary\ASI\ASICameraObjectModel2.cs" />
+    <Compile Include="CameraDictionary\ASI\Size.cs" />
+    <Compile Include="Models\ExpansionModel.cs" />
     <Compile Include="Modules\LogHelper.cs" />
     <Compile Include="Modules\ScopeCommand.cs" />
     <Compile Include="Modules\SettingsFile.cs" />
@@ -75,12 +79,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Modules\Request.cs" />
     <Compile Include="Modules\SerialQueue.cs" />
-    <Compile Include="SerialService.cs" />
+    <Compile Include="Services\OperatorService.cs" />
+    <Compile Include="Models\BaseModel.cs" />
     <Compile Include="TCP\ConnectionState.cs" />
     <Compile Include="TCP\RCProvider.cs" />
     <Compile Include="TCP\TcpServer.cs" />
     <Compile Include="TCP\TcpServiceProvider.cs" />
-    <Compile Include="TeleController.cs" />
+    <Compile Include="TelescopeDictionary\IScope.cs" />
     <Compile Include="TelescopeDictionary\MeadeLX200_16GPS.cs" />
     <Compile Include="Modules\SerialHelper.cs">
       <SubType>Component</SubType>
@@ -92,8 +97,14 @@
     <None Include="AppSettings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>AppSettings.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="CameraDictionary\ASI\ASICamera2.dll" />
+    <Content Include="CameraDictionary\ASI\ASICamera2.h" />
+    <Content Include="CameraDictionary\ASI\ASICamera2_x64.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -18,20 +18,28 @@ namespace StandAlone
         //    Error
         //}
 
-        public LogHelper New(string LogFileLocation)
+        public LogHelper New(string LogFileLocation, Scope scope)
         {
             this.LogFileLocation = LogFileLocation;
+
+            LogToFile($"Starting logger for scope {scope.ScopeModel} connected on {scope.ComPort}.");
+
+            if (scope.Dome != null)
+                LogToFile($"Logging for the dome connected on {scope.Dome.ComPort} as well.");
+
             return this;
         }
 
-        public enum messageTypes
+        public enum MessageTypes
         {
+            VERBOSE,
             INFO,
+            SUCCESS,
             WARNING,
             ERROR
         }
 
-        public void Write(string s, string tag, messageTypes type = messageTypes.INFO, bool newLine = true, bool dropTimestamp = false)
+        public void Write(string s, string tag, MessageTypes type = MessageTypes.INFO, bool newLine = true, bool dropTimestamp = false)
         {
             if (dropTimestamp)
                 Console.Write(s);
@@ -40,16 +48,24 @@ namespace StandAlone
                 Console.Write($"[{DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss")} ");
                 switch (type)
                 {
-                    case messageTypes.INFO:
+                    case MessageTypes.VERBOSE:
+                        Console.ForegroundColor = ConsoleColor.DarkGray;
+
+                        break;
+                    case MessageTypes.INFO:
                         Console.ForegroundColor = ConsoleColor.Cyan;
 
                         break;
-                    case messageTypes.WARNING:
+                    case MessageTypes.WARNING:
                         Console.ForegroundColor = ConsoleColor.Yellow;
 
                         break;
-                    case messageTypes.ERROR:
+                    case MessageTypes.ERROR:
                         Console.ForegroundColor = ConsoleColor.Red;
+
+                        break;
+                    case MessageTypes.SUCCESS:
+                        Console.ForegroundColor = ConsoleColor.Green;
 
                         break;
                     default:
@@ -61,7 +77,7 @@ namespace StandAlone
                 if (!dropTimestamp)
                     Console.ResetColor();
 
-                Console.Write($" {tag.ToUpper()}] {s}");
+                Console.Write($" {tag.ToUpper()}]\t{s}");
 
                 if (dropTimestamp)
                     Console.ResetColor();
@@ -71,7 +87,7 @@ namespace StandAlone
                 Console.Write(Environment.NewLine);
         }
 
-        public static void WriteS(string s, string tag, messageTypes type = messageTypes.INFO, bool newLine = true, bool dropTimestamp = false)
+        public static void WriteS(string s, string tag, MessageTypes type = MessageTypes.INFO, bool newLine = true, bool dropTimestamp = false)
         {
             if (dropTimestamp)
                 Console.Write(s);
@@ -80,35 +96,60 @@ namespace StandAlone
                 Console.Write($"[{DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss")} ");
                 switch (type)
                 {
-                    case messageTypes.INFO:
+                    case MessageTypes.VERBOSE:
+                        Console.ForegroundColor = ConsoleColor.DarkGray;
+
+                        break;
+                    case MessageTypes.INFO:
                         Console.ForegroundColor = ConsoleColor.Cyan;
 
                         break;
-                    case messageTypes.WARNING:
+                    case MessageTypes.WARNING:
                         Console.ForegroundColor = ConsoleColor.Yellow;
 
                         break;
-                    case messageTypes.ERROR:
+                    case MessageTypes.ERROR:
                         Console.ForegroundColor = ConsoleColor.Red;
+
+                        break;
+                    case MessageTypes.SUCCESS:
+                        Console.ForegroundColor = ConsoleColor.Green;
 
                         break;
                     default:
                         break;
                 }
 
-                Console.Write(type.ToString());
+                Console.Write(type.ToString() + "\t");
 
                 if (!dropTimestamp)
                     Console.ResetColor();
 
-                Console.Write($" {tag.ToUpper()}] {s}");
+                Console.Write($"{tag.ToUpper()}\t]  ");
 
-                if (dropTimestamp)
-                    Console.ResetColor();
+                if (type == MessageTypes.ERROR)
+                    Console.ForegroundColor = ConsoleColor.Red;
+
+                Console.Write($"{s}");
+
+                Console.ResetColor();
+                //if (dropTimestamp)
+                //    Console.ResetColor();
             }
 
             if (newLine)
                 Console.Write(Environment.NewLine);
+        }
+
+        public void LogVerbose(string s)
+        {
+            LogToFile(s);
+            Console.WriteLine(DateTimeOffset.Now.ToString("dd/MM/yyyy HH:mm:ss.ffffff") + " " + s);
+        }
+
+        private void LogToFile(string s)
+        {
+            s = DateTimeOffset.Now.ToString("dd/MM/yyyy HH:mm:ss.ffffff") + "  " + s + "\n";
         }
 
     }

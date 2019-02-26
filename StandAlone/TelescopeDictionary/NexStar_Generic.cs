@@ -95,18 +95,26 @@ namespace StandAlone.TelescopeDictionary
             POS,
             NEG
         }
-
-        public CoordinateSystems CoordinateMode { get; set; }
         
+        public CoordinateSystems CoordinateMode { get; set; }
+
         /// <summary>
-        /// Retrieves the (precise?) position of the scope.
+        /// Retrieves the position of the scope in the sky.
         /// </summary>
         /// <param name="highPrecision"></param>
         /// <returns>A one dimensional array contains the position in the first two elements.</returns>
         public double[] GetPosition(bool highPrecision = true)
         {
+            _log.LogVerbose("Retrieving scope's position in the sky...");
+
             string cmd = "";
             long denominator = -1;
+
+            if (CoordinateMode == 0)
+            {
+                LogHelper.WriteS("Invalid coordinate system value.", "ERROR", LogHelper.MessageTypes.ERROR);
+                return new double[2];
+            }
 
             if (highPrecision)
             {
@@ -136,7 +144,9 @@ namespace StandAlone.TelescopeDictionary
             double[] coords = new double[2];
 
             for (int i = 0; i < 2; i++)
-                coords[i] = 360.0 * Convert.ToInt32(coordsString[i], 16) / Convert.ToDouble(denominator);
+                coords[i] = 360.0 * Convert.ToInt32(coordsString[i].Substring(0, 8), 16) / Convert.ToDouble(denominator);
+
+            _log.LogVerbose(string.Format("Scope coords are {0},{1}.", coords[0], coords[1]));
 
             return coords;
         }
@@ -149,6 +159,9 @@ namespace StandAlone.TelescopeDictionary
         /// <param name="highPrecision"></param>
         public void GoToCoordinates(double firstCoord, double lastCoord, bool highPrecision)
         {
+            _log.LogVerbose("N");
+            _log.LogVerbose(string.Format("Navigating to coordinates {0},{1} with {2} precision.", firstCoord, lastCoord, highPrecision ? "high" : "low"));
+
             string cmd = "";
 
             if (highPrecision)
@@ -160,7 +173,7 @@ namespace StandAlone.TelescopeDictionary
 
                 double firstCoordinate = Math.Round(firstCoord / 360.0 * 0x100000000);
                 double secondCoordinate = Math.Round(lastCoord / 360.0 * 0x100000000);
-                cmd += string.Format("{0:8C},{1:8C}", firstCoordinate.ToString("X"), secondCoordinate.ToString("X")); // print hex of the coordinates.
+                cmd += string.Format("{0:8C},{1:8C}", firstCoordinate.ToString("2X"), secondCoordinate.ToString("2X")); // print hex of the coordinates.
             }
             else
             {
@@ -171,12 +184,11 @@ namespace StandAlone.TelescopeDictionary
 
                 double firstCoordinate = Math.Round(firstCoord / 360.0 * 0x10000);
                 double secondCoordinate = Math.Round(lastCoord / 360.0 * 0x10000);
-                cmd += string.Format("{0:4C},{1:4C}", firstCoordinate.ToString("X"), secondCoordinate.ToString("X")); // print hex of the coordinates.
+                cmd += string.Format("{0:4C},{1:4C}", firstCoordinate.ToString("2X"), secondCoordinate.ToString("2X")); // print hex of the coordinates.
             }
 
             _helper.DoCommand(cmd);
         }
-
 
         /// <summary>
         /// Retrieves the scope's current tracking mode.
@@ -184,8 +196,12 @@ namespace StandAlone.TelescopeDictionary
         /// <returns></returns>
         public TrackingModes GetTrackingMode()
         {
+            _log.LogVerbose("Retrieving scope tracking mode...");
+
             string cmd = "t";
             string res = _helper.DoCommand(cmd);
+
+            _log.LogVerbose($"Tracking mode is {res[0]}.");
 
             return (TrackingModes)int.Parse(res[0].ToString());
         }
@@ -194,8 +210,10 @@ namespace StandAlone.TelescopeDictionary
         /// Sets the scope's current tracking mode.
         /// </summary>
         /// <param name="trackingMode"></param>
-        public void SetTrackingMode(CoordinateSystems trackingMode)
+        public void SetTrackingMode(TrackingModes trackingMode)
         {
+            _log.LogVerbose($"Setting scope tracking mode to {(int)trackingMode}.");
+
             string cmd = "T";
             string res = _helper.DoCommand(cmd + (int)trackingMode);
         }
@@ -206,11 +224,43 @@ namespace StandAlone.TelescopeDictionary
         /// <returns></returns>
         public double[] GetLocation()
         {
+            _log.LogVerbose($"Retrieving scope's geographical location...");
+
             string cmd = "w";
             string res = _helper.DoCommand(cmd);
 
-            // todo: see what we get.
-            return new double[2];
+            if (!res.Contains("#"))
+            {
+                _log.LogVerbose("Invalid response.");
+                return new double[2];
+            }
+
+            byte[] response = Encoding.GetBytes(res);
+
+            int latitude_degrees = response[0];
+            int latitude_minutes = response[1];
+            int latitude_seconds = response[2];
+            int latitude_sign = response[3];    // 0 == north, 1 == south
+
+            int longitude_degrees = response[4];
+            int longitude_minutes = response[5];
+            int longitude_seconds = response[6];
+            int longitude_sign = response[7];  // 0 == east, 1 == west
+
+            latitude_seconds = latitude_degrees * 3600 + latitude_minutes * 60 + latitude_seconds;
+
+            if (latitude_sign != 0)
+                latitude_seconds = -latitude_seconds;
+
+            longitude_seconds = longitude_degrees * 3600 + longitude_minutes * 60 + longitude_seconds;
+
+            if (longitude_sign != 0)
+                longitude_seconds = -longitude_seconds;
+
+            double latitude = latitude_seconds / 3600.0;
+            double longitude = longitude_seconds / 3600.0;
+
+            return new double[] { latitude, longitude };
         }
 
         /// <summary>
@@ -220,46 +270,48 @@ namespace StandAlone.TelescopeDictionary
         /// <param name="Latitude">Geographical latitude in decimal format.</param>
         public void SetLocation(double Longitude, double Latitude)
         {
+            _log.LogVerbose($"Setting scope's geographical location to {Longitude},{Latitude}.");
+
             // Fix latitude
-            int latitude_sign = -1;
-            double latitude_seconds = Math.Round(Latitude * 3600);
+            byte latitude_sign = 0;
+
+            byte latitude_seconds = (byte)Math.Round(Latitude * 3600);
             if (latitude_seconds >= 0)
                 latitude_sign = 0;
             else
             {
                 latitude_sign = 1;
-                latitude_seconds = -latitude_seconds;
+                latitude_seconds = (byte)-latitude_seconds;
             }
             // Fix longitude
 
-            int longitude_sign = -1;
-            double longitude_seconds = Math.Round(Longitude * 3600);
+            byte longitude_sign = 0;
+            byte longitude_seconds = (byte)Math.Round(Longitude * 3600);
             if (longitude_seconds >= 0)
                 longitude_sign = 0;
             else
             {
                 longitude_sign = 1;
-                longitude_seconds = -longitude_seconds;
+                longitude_seconds = (byte)-longitude_seconds;
             }
 
             // Reduce to Degrees/Minutes/Seconds
+            int a;
 
-            int latitude_degrees = Convert.ToInt32(latitude_seconds) / 3600; // latitude_seconds %= 3600
-            int latitude_minutes = Convert.ToInt32(latitude_seconds) / 60;   // latitude_seconds %= 60
+            byte latitude_degrees = (byte)Math.DivRem(latitude_seconds, 3600, out a); // latitude_seconds %= 3600
+            byte latitude_minutes = (byte)Math.DivRem(latitude_seconds, 60, out a);   // latitude_seconds %= 60
 
-            int longitude_degrees = Convert.ToInt32(longitude_seconds) / 3600;   // longitude_seconds %= 3600
-            int longitude_minutes = Convert.ToInt32(longitude_seconds) / 60;                          // longitude_seconds %= 60
+            byte longitude_degrees = (byte)Math.DivRem(longitude_seconds, 3600, out a);   // longitude_seconds %= 3600
+            byte longitude_minutes = (byte)Math.DivRem(longitude_seconds, 60, out a);     // longitude_seconds %= 60
 
             // Synthesize "W" request
-            
-            string cmd = "W" + latitude_degrees + latitude_minutes + latitude_seconds + latitude_sign + latitude_degrees + latitude_minutes + latitude_seconds + longitude_sign;
 
-            _helper.DoCommand(cmd);
-        }
-        
-        public void StopSlewing()
-        {
-            _helper.DoCommand("M");
+            //string cmd = "W" + latitude_degrees + latitude_minutes.ToString().PadLeft(2, '0') + latitude_seconds + latitude_sign + latitude_degrees + latitude_minutes + latitude_seconds + longitude_sign;
+            byte[] cmd = { Encoding.GetBytes("W")[0], latitude_degrees, latitude_minutes,latitude_seconds, latitude_sign, longitude_degrees, longitude_minutes, longitude_seconds, longitude_sign };
+
+            _log.LogVerbose(string.Format("Set scope's geographical location to {0}d{1}\"{2}', {0}d{1}\"{2}'", latitude_degrees, latitude_minutes, latitude_seconds, longitude_degrees, longitude_minutes, longitude_seconds));
+
+            _helper.DoCommand(Encoding.GetString(cmd));
         }
 
         /// <summary>
@@ -271,6 +323,11 @@ namespace StandAlone.TelescopeDictionary
         /// <param name="Speed">Speed from 0 (stop) to 9 (max slew rate).</param>
         public void StartSlewing(SlewDirections Direction, DeviceIDs DeviceID, byte Speed)
         {
+            if (Speed != 0)
+                _log.LogVerbose($"Slewing device {DeviceID} to {Direction} at speed {Speed}.");
+            else
+                _log.LogVerbose($"Stopping device {DeviceID}.");
+
             byte[] cmd = new byte[8];
 
             cmd[0] = 0x50;
@@ -288,9 +345,17 @@ namespace StandAlone.TelescopeDictionary
                 cmd[3] = 0x25;
 
             if (Speed > 9 || Speed < 0)
-                throw new ArgumentException;
+                throw new ArgumentException("Speed value must be from 0 to 9.");
             else
                 cmd[4] = Speed;
+
+            _helper.DoCommand(Encoding.GetString(cmd));
+        }
+
+        public void StopSlewing()
+        {
+            _log.LogVerbose("Stopping all slewing actions.");
+            _helper.DoCommand("M");
         }
 
         // TODO!

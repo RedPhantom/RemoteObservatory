@@ -25,7 +25,6 @@ namespace StandAlone {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("COM9")]
         public string TelescopeSerialPort {
             get {
                 return ((string)(this["TelescopeSerialPort"]));
@@ -79,7 +78,7 @@ namespace StandAlone {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("COM2")]
+        [global::System.Configuration.DefaultSettingValueAttribute("COM13")]
         public string EndUnitSerialPort {
             get {
                 return ((string)(this["EndUnitSerialPort"]));

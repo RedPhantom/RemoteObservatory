@@ -126,7 +126,7 @@ namespace StandAlone.TCP
             }
             catch (Exception)
             {
-                LogHelper.WriteS($"Connection with a client was terminated.", "tcp", LogHelper.messageTypes.INFO);
+                LogHelper.WriteS($"Connection with a client was terminated.", "tcp", LogHelper.MessageTypes.INFO);
                 return;
             }
             //Im considering the following condition as a signal that the
@@ -137,7 +137,7 @@ namespace StandAlone.TCP
                 try { st._provider.OnReceiveData(st); }
                 catch (Exception ex)
                 {
-                    LogHelper.WriteS(ex.Message, "critical error", LogHelper.messageTypes.ERROR);
+                    LogHelper.WriteS(ex.Message, "critical error", LogHelper.MessageTypes.ERROR);
                     //report error in the provider
                 }
                 //Resume ReceivedData callback loop

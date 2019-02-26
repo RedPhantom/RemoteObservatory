@@ -21,7 +21,7 @@ namespace StandAlone.TCP
             //if (!state.Write(Encoding.UTF8.GetBytes("init\r\n"), 0, 6)) // this value has no significance
             //    state.EndConnection();
             //if write fails... then close connection
-            LogHelper.WriteS($"Accepted a connection: " + state.RemoteEndPoint.ToString(), "tcp", LogHelper.messageTypes.INFO);
+            LogHelper.WriteS($"Accepted a connection: " + state.RemoteEndPoint.ToString(), "tcp", LogHelper.MessageTypes.INFO);
         }
 
         Socket conn;
@@ -48,6 +48,11 @@ namespace StandAlone.TCP
             _receivedStr = "";
         }
 
+        /// <summary>
+        /// Parse the retrieved data.
+        /// </summary>
+        /// <param name="receivedStr">The retrieved data.</param>
+        /// <param name="cs">The client sending the data.</param>
         private void ParseData(string receivedStr, ConnectionState cs)
         {
             
@@ -56,14 +61,14 @@ namespace StandAlone.TCP
         private void AddNewClient(ConnectionState cs, string DeviceID)
         {
             Program.Clients.Add(cs);
-            LogHelper.WriteS("Adding new client to client pool, device ID is " + cs.DeviceID + ".", "", LogHelper.messageTypes.INFO);
+            LogHelper.WriteS("Adding new client to client pool, device ID is " + cs.DeviceID + ".", "TCP", LogHelper.MessageTypes.INFO);
         }
 
         public override void OnDropConnection(ConnectionState state)
         {
             Program.Clients.Remove(state);
             //Nothing to clean here
-            LogHelper.WriteS("Connection dropped.", "TCP", LogHelper.messageTypes.INFO);
+            LogHelper.WriteS("Connection dropped.", "TCP", LogHelper.MessageTypes.INFO);
         }
     }
 }

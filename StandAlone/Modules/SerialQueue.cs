@@ -42,13 +42,13 @@ namespace StandAlone
             {
                 try_++;
                 System.Threading.Thread.Sleep(500);
-                LogHelper.WriteS("Tried command: <" + cmd.ToString() + ">. Failed, this is try " + try_ + " of " + this.numTries, "SERIAL", LogHelper.messageTypes.WARNING);
+                LogHelper.WriteS("Tried command: <" + cmd.ToString() + ">. Failed, this is try " + try_ + " of " + this.numTries, "SERIAL", LogHelper.MessageTypes.WARNING);
             }
 
             if (try_ >= this.numTries)
             {
                 string err = $"Exceeded number of tries on command <{cmd}>.";
-                LogHelper.WriteS(err, "SERIAL", LogHelper.messageTypes.ERROR);
+                LogHelper.WriteS(err, "SERIAL", LogHelper.MessageTypes.ERROR);
                 throw new System.Exception(err);
             }
 

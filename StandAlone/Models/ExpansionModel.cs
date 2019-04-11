@@ -9,60 +9,11 @@ namespace StandAlone.Models
     /// <summary>
     /// Contains all information required for an observation task.
     /// </summary>
-    class ObservationTask
-    {
-        public int RecordID { get; set; }
+    
 
-        public int ScopeID { get; set; }
+    
 
-        public enum TaskStates
-        {
-            Pending,
-            Executing,
-            Complete,
-            Failed
-        }
-
-        public TaskStates State { get; set; }
-
-        public string StateDescription { get; set; }
-
-        public CaptureSettings Settings { get; set; }
-
-
-        // metadata
-        public DateTimeOffset CreationTime { get; set; }
-        public DateTimeOffset EditTime { get; set; }
-
-        public int OwnerID { get; set; }
-    }
-
-    class CaptureSettings
-    {
-        public Scope Scope { get; set; }
-
-        public CaptureOrders CaptureOrders { get; set; }
-    }
-
-    class CaptureOrders
-    {
-        public enum CaptureModes
-        {
-            Image,
-            Video
-        }
-
-        public CaptureModes Mode { get; set; }
-
-        public List<Frame> Frames { get; set; }
-
-        /// <summary>
-        /// Exposure time in milliseconds.
-        /// </summary>
-        public double ExposureTime { get; set; }
-
-        public int Gain { get; set; }
-    }
+    
 
     
     struct RgbPixel

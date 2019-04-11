@@ -71,7 +71,14 @@
     <Compile Include="CameraDictionary\ASI\ASICameraDll2.cs" />
     <Compile Include="CameraDictionary\ASI\ASICameraObjectModel2.cs" />
     <Compile Include="CameraDictionary\ASI\Size.cs" />
+    <Compile Include="Models\Camera.cs" />
+    <Compile Include="Models\CaptureOrders.cs" />
+    <Compile Include="Models\CaptureSettings.cs" />
+    <Compile Include="Models\Dome.cs" />
     <Compile Include="Models\ExpansionModel.cs" />
+    <Compile Include="Models\ObservationTask.cs" />
+    <Compile Include="Models\Scope.cs" />
+    <Compile Include="Models\Types.cs" />
     <Compile Include="Modules\LogHelper.cs" />
     <Compile Include="Modules\ScopeCommand.cs" />
     <Compile Include="Modules\SettingsFile.cs" />
@@ -80,7 +87,7 @@
     <Compile Include="Modules\Request.cs" />
     <Compile Include="Modules\SerialQueue.cs" />
     <Compile Include="Services\OperatorService.cs" />
-    <Compile Include="Models\BaseModel.cs" />
+    <Compile Include="Models\SettingsModel.cs" />
     <Compile Include="TCP\ConnectionState.cs" />
     <Compile Include="TCP\RCProvider.cs" />
     <Compile Include="TCP\TcpServer.cs" />
